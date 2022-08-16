@@ -1,5 +1,7 @@
 package com.abernathyclinic.patienthistory.controller;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -82,11 +84,11 @@ public class NoteControllerTest {
 	@Test
 	public void testSaveNote() throws Exception {
 		Note noteSaveTest = new Note(6L, "TestSaveNote", "Test for saving a new note");
-		when(noteService.saveNote(noteSaveTest)).thenReturn(noteSaveTest);
+		when(noteService.saveNote(any(Note.class))).thenReturn(noteSaveTest);
 		mockMvc.perform(MockMvcRequestBuilders.post("/note/add")
 				.content(objectMapper.writeValueAsString(noteSaveTest))
 				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isCreated())
+				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				.andExpect(content().json(objectMapper.writeValueAsString(noteSaveTest)));
 	}
@@ -94,7 +96,7 @@ public class NoteControllerTest {
 	@Test
 	public void testUpdateNote() throws Exception {
 		Note noteUpdateTest = new Note(7L, "TestUpdateNote", "Test for updating a note");
-		when(noteService.updateNote("fakenoteid", noteUpdateTest)).thenReturn(noteUpdateTest);
+		when(noteService.updateNote(anyString(), any(Note.class))).thenReturn(noteUpdateTest);
 		mockMvc.perform(MockMvcRequestBuilders.put("/note/update/"+"fakenoteid")
 				.content(objectMapper.writeValueAsString(noteUpdateTest))
 				.contentType(MediaType.APPLICATION_JSON))
