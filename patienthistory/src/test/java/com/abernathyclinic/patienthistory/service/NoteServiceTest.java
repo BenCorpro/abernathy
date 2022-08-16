@@ -2,6 +2,7 @@ package com.abernathyclinic.patienthistory.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -18,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import com.abernathyclinic.patienthistory.dto.NoteDTO;
+import com.abernathyclinic.patienthistory.exception.NoteNotFoundException;
 import com.abernathyclinic.patienthistory.model.Note;
 import com.abernathyclinic.patienthistory.repository.NoteRepository;;
 
@@ -48,52 +51,76 @@ public class NoteServiceTest {
 	}
 	
 	@Test
-	public void getAllNotesTest() {
+	public void getAllNotesTest_returnsNoteList() {
 		when(noteRepository.findAll()).thenReturn(noteTestList);
-		List<Note> resultTestList = noteService.getAllNotes();
+		List<NoteDTO> resultTestList = noteService.getAllNotes();
 		assertNotNull(resultTestList);
 		assertEquals(5, resultTestList.size());
 		assertEquals("TestNone", resultTestList.get(0).getPatientName());
 	}
 	
 	@Test
-	public void getNoteByIdTest() throws Exception {
+	public void getNoteByIdTest_existingId_returnsNote() throws Exception {
 		when(noteRepository.findById(anyString())).thenReturn(Optional.of(noteTestList.get(1)));
-		Note noteTest = noteService.getNoteById("testnoteid");
+		NoteDTO noteTest = noteService.getNoteById("testnoteid");
 		assertNotNull(noteTest);
 		assertEquals("TestBorderline", noteTest.getPatientName());
 	}
 	
 	@Test
-	public void getNoteByPatientIdTest() throws Exception {
+	public void getNoteByIdTest_wrongId_throwsException() throws Exception {
+		when(noteRepository.findById(anyString())).thenReturn(Optional.empty());
+		assertThrows(NoteNotFoundException.class, () -> noteService.getNoteById("wrongnoteid"));
+	}
+	
+	@Test
+	public void getNoteByPatientIdTest_existingId_returnsNoteList() throws Exception {
 		when(noteRepository.findByPatientId(3L)).thenReturn(noteTestList.subList(2, 3));
-		List<Note> resultTestList = noteService.getNoteByPatientId(3L);
+		List<NoteDTO> resultTestList = noteService.getNoteByPatientId(3L);
 		assertNotNull(resultTestList.get(0));
 		assertEquals("Patient states that they are short term Smoker", resultTestList.get(0).getRecommendation());
 	}
 	
 	@Test
-	public void saveNoteTest() throws Exception {
+	public void getNoteByPatientIdTest_wrongId_throwsException() throws Exception {
+		when(noteRepository.findByPatientId(3L)).thenReturn(new ArrayList<Note>());
+		assertThrows(NoteNotFoundException.class, () -> noteService.getNoteByPatientId(11L));
+	}
+	
+	@Test
+	public void saveNoteTest_returnsNote() throws Exception {
 		Note noteSaveTest = new Note(6L, "TestSaveNote", "Test for saving a new note");
-		when(noteRepository.insert(noteSaveTest)).thenReturn(noteSaveTest);
-		noteSaveTest = noteService.saveNote(noteSaveTest);
+		NoteDTO noteDTOSaveTest = new NoteDTO(6L, "TestSaveNote", "Test for saving a new note");
+		when(noteRepository.insert(any(Note.class))).thenReturn(noteSaveTest);
+		noteDTOSaveTest = noteService.saveNote(noteDTOSaveTest);
 		assertNotNull(noteSaveTest.getPatientId());
 		assertEquals("TestSaveNote", noteSaveTest.getPatientName());
 	}
 	
 	@Test
-	public void updateNoteTest() throws Exception {
+	public void updateNoteTest_existingId_returnsNote() throws Exception {
 		Note noteUpdateTest = new Note(7L, "TestUpdateNote", "Test for updating a note");
+		NoteDTO noteDTOUpdateTest = new NoteDTO(7L, "TestUpdateNote", "Test for updating a note");
 		when(noteRepository.findById(noteTestList.get(3).getId())).thenReturn(Optional.of(noteTestList.get(3)));
 		when(noteRepository.save(any(Note.class))).thenReturn(noteUpdateTest);
-		noteUpdateTest = noteService.updateNote(noteTestList.get(3).getId(), noteUpdateTest);
+		noteDTOUpdateTest = noteService.updateNote(noteTestList.get(3).getId(), noteDTOUpdateTest);
 		assertNotNull(noteUpdateTest);
 		assertEquals("Test for updating a note", noteUpdateTest.getRecommendation());
 	}
 	
 	@Test
-	public void deleteNoteTest() {
+	public void updateNoteTest_wrongId_throwsException() throws Exception {
+		Note noteUpdateTest = new Note(7L, "TestUpdateNote", "Test for updating a note");
+		NoteDTO noteDTOUpdateTest = new NoteDTO(7L, "TestUpdateNote", "Test for updating a note");
+		when(noteRepository.findById(noteTestList.get(3).getId())).thenReturn(Optional.empty());
+		when(noteRepository.save(any(Note.class))).thenReturn(noteUpdateTest);
+		assertThrows(NoteNotFoundException.class, () -> noteService.updateNote(noteTestList.get(3).getId(), noteDTOUpdateTest));
+	}
+	
+	@Test
+	public void deleteNoteTest_existingId_returnsVoid() {
 		String idNoteDelete = noteTestList.get(4).getId();
-		noteService.deleteNote(idNoteDelete);
+		when(noteRepository.findById(anyString())).thenReturn(Optional.empty());
+		assertThrows(NoteNotFoundException.class, () -> noteService.deleteNote(idNoteDelete));
 	}
 }

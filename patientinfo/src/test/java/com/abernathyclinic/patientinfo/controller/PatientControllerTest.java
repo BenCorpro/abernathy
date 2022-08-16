@@ -86,7 +86,7 @@ public class PatientControllerTest {
 		mockMvc.perform(get("/patient/11"))
 				.andExpect(status().isNotFound())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(MockMvcResultMatchers.jsonPath("Erreur", Is.is("Patient 11 not found!")));
+				.andExpect(MockMvcResultMatchers.jsonPath("Error", Is.is("Patient 11 not found!")));
 	}
 	
 	@Test
@@ -104,7 +104,7 @@ public class PatientControllerTest {
 		mockMvc.perform(get("/patient?given=wrong&family="))
 		 		.andExpect(status().isNotFound())
 		 		.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-		 		.andExpect(MockMvcResultMatchers.jsonPath("Erreur", Is.is("Patient with firstname: and lastname: wrong not found!")));
+		 		.andExpect(MockMvcResultMatchers.jsonPath("Error", Is.is("Patient with firstname: and lastname: wrong not found!")));
 	}
 	
 	@Test
@@ -167,6 +167,6 @@ public class PatientControllerTest {
 		mockMvc.perform(delete("/patient/delete/"+"11"))
 				.andExpect(status().isNotFound())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(MockMvcResultMatchers.jsonPath("Erreur", Is.is("Patient 11 not found!")));
+				.andExpect(MockMvcResultMatchers.jsonPath("Error", Is.is("Patient 11 not found!")));
 	}
 }

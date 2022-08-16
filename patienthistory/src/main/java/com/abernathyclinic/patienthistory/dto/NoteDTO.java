@@ -1,10 +1,17 @@
 package com.abernathyclinic.patienthistory.dto;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+
 public class NoteDTO {
 
 	private String id;
+	@Positive
 	private long patientId;
+	@NotNull(message = "Le nom du patient doit être renseigné")
 	private String patientName;
+	@NotEmpty(message ="La note ne doit pas être vide")
 	private String recommendation;
 	
 	

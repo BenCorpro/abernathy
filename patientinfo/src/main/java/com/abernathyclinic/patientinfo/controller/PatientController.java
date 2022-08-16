@@ -52,7 +52,7 @@ public class PatientController {
 		return patientService.savePatient(newPatient);
 	}
 	
-	@PutMapping(value = "/patient/update/{id}")
+	@PutMapping("/patient/update/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public PatientDTO updatePatient(@PathVariable("id") Long id, @Valid @RequestBody PatientDTO modPatient) throws PatientNotFoundException {
 		return patientService.updatePatient(id, modPatient);

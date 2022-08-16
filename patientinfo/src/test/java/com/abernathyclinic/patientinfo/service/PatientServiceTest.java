@@ -91,7 +91,7 @@ public class PatientServiceTest {
 	}
 	
 	@Test
-	public void savePatientTest() throws Exception {
+	public void savePatientTest_returnsPatient() throws Exception {
 		Patient patientSaveTest = new Patient("TestSavePatient", "Test", dateFormatter.parse("1986-02-12"), Gender.FEMALE, "5 Crash Boulevard", "555-666-7777");
 		PatientDTO patientDTOSaveTest = new PatientDTO("TestSavePatient", "Test", dateFormatter.parse("1986-02-12"), Gender.FEMALE, "5 Crash Boulevard", "555-666-7777");
 		when(patientRepository.save(any(Patient.class))).thenReturn(patientSaveTest);
@@ -101,7 +101,7 @@ public class PatientServiceTest {
 	}
 	
 	@Test
-	public void updatePatientTest() throws Exception {
+	public void updatePatientTest_existingId_returnsPatient() throws Exception {
 		Patient patientUpdateTest = new Patient("TestUpdatePatient", "Test", dateFormatter.parse("1924-03-15"), Gender.FEMALE, "6 Off Road", "666-777-9999");
 		PatientDTO patientDTOUpdateTest = new PatientDTO("TestUpdatePatient", "Test", dateFormatter.parse("1924-03-15"), Gender.FEMALE, "6 Off Road", "666-777-9999");
 		when(patientRepository.findById(patientTestList.get(3).getId())).thenReturn(Optional.of(patientTestList.get(3)));

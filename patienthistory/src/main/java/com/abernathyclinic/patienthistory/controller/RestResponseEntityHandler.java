@@ -1,4 +1,4 @@
-package com.abernathyclinic.patientinfo.controller;
+package com.abernathyclinic.patienthistory.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,28 +10,28 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.abernathyclinic.patientinfo.exception.PatientNotFoundException;
+import com.abernathyclinic.patienthistory.exception.NoteNotFoundException;
 
 @RestControllerAdvice
-public class RestResponseEntityExceptionHandler {
+public class RestResponseEntityHandler {
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public Map<String, String> handleArgumentNotValidException(MethodArgumentNotValidException manvEx){
 		Map<String, String> errors = new HashMap<>();
 		manvEx.getBindingResult().getAllErrors().forEach((error) -> {
-			String fieldNAme = ((FieldError) error).getField();
-			String errorMessage = error.getDefaultMessage();
-			errors.put(fieldNAme, errorMessage);
+			String fieldName = ((FieldError) error).getField();
+			String errorMEssage = error.getDefaultMessage();
+			errors.put(fieldName, errorMEssage);
 		});
 		return errors;
 	}
 	
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	@ExceptionHandler(PatientNotFoundException.class)
-	public Map<String, String> handlePatientNotFoundException(PatientNotFoundException pnfEx) {
+	@ExceptionHandler(NoteNotFoundException.class)
+	public Map<String, String> handleNoteNotFoundException(NoteNotFoundException nnfEx){
 		Map<String, String> error = new HashMap<>();
-		error.put("Error", pnfEx.getMessage());
+		error.put("Error", nnfEx.getMessage());
 		return error;
 	}
 	
