@@ -128,7 +128,7 @@ public class PatientControllerTest {
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isBadRequest())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(MockMvcResultMatchers.jsonPath("firstname", Is.is("Le prénom doit être renseigné")));
+				.andExpect(MockMvcResultMatchers.jsonPath("Error", Is.is("Le prénom doit être renseigné")));
 	}
 	
 	@Test
@@ -152,7 +152,7 @@ public class PatientControllerTest {
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isBadRequest())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(MockMvcResultMatchers.jsonPath("lastname", Is.is("Le nom doit être renseigné")));
+				.andExpect(MockMvcResultMatchers.jsonPath("Error", Is.is("Le nom doit être renseigné")));
 	}
 	
 	@Test

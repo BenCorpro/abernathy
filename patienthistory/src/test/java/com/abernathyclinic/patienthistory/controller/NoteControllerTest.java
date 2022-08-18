@@ -124,7 +124,7 @@ public class NoteControllerTest {
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isBadRequest())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(MockMvcResultMatchers.jsonPath("patientName", Is.is("Le nom du patient doit être renseigné")));
+				.andExpect(MockMvcResultMatchers.jsonPath("Error", Is.is("Le nom du patient doit être renseigné")));
 	}
 	
 	@Test
@@ -148,7 +148,7 @@ public class NoteControllerTest {
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isBadRequest())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(MockMvcResultMatchers.jsonPath("patientName", Is.is("Le nom du patient doit être renseigné")));
+				.andExpect(MockMvcResultMatchers.jsonPath("Error", Is.is("Le nom du patient doit être renseigné")));
 	}
 	
 	@Test

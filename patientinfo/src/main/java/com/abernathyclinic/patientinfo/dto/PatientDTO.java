@@ -3,6 +3,7 @@ package com.abernathyclinic.patientinfo.dto;
 import java.util.Date;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import com.abernathyclinic.patientinfo.util.Gender;
 
@@ -10,14 +11,18 @@ public class PatientDTO {
 
 	private long id;
 	@NotNull(message = "Le prénom doit être renseigné")
+	@Pattern(regexp = "[a-zA-Z-\\s]{3,15}", message = "Le prénom doit être valide et comporter 3 caractères minimum")
 	private String firstname;
 	@NotNull(message = "Le nom doit être renseigné")
+	@Pattern(regexp = "[a-zA-Z-\\s]{3,15}", message = "Le nom doit être valide et comporter 3 caractères minimum")
 	private String lastname;
 	@NotNull
 	private Date birthdate;
 	@NotNull
 	private Gender gender;
+	@Pattern(regexp = "[a-zA-Z0-9-\\s]{3,50}")
 	private String address;
+	@Pattern(regexp = "(?:(?:\\+|00)33[\\s.-]{0,3}(?:\\(0\\)[\\s.-]{0,3})?|0)[1-9](?:(?:[\\s.-]?\\d{2}){4}|\\d{2}(?:[\\s.-]?\\d{3}){2})")
 	private String phone;
 	
 	

@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -20,9 +19,8 @@ public class RestResponseEntityExceptionHandler {
 	public Map<String, String> handleArgumentNotValidException(MethodArgumentNotValidException manvEx){
 		Map<String, String> errors = new HashMap<>();
 		manvEx.getBindingResult().getAllErrors().forEach((error) -> {
-			String fieldNAme = ((FieldError) error).getField();
 			String errorMessage = error.getDefaultMessage();
-			errors.put(fieldNAme, errorMessage);
+			errors.put("Error", errorMessage);
 		});
 		return errors;
 	}
