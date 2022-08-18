@@ -2,6 +2,7 @@ package com.abernathyclinic.patientinfo.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -20,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import com.abernathyclinic.patientinfo.dto.PatientDTO;
+import com.abernathyclinic.patientinfo.exception.PatientNotFoundException;
 import com.abernathyclinic.patientinfo.model.Patient;
 import com.abernathyclinic.patientinfo.repository.PatientRepository;
 import com.abernathyclinic.patientinfo.util.Gender;
@@ -51,52 +54,82 @@ public class PatientServiceTest {
 	}
 	
 	@Test
-	public void getAllPatientsTest() {
+	public void getAllPatientsTest_returnsPatientList() {
 		when(patientRepository.findAll()).thenReturn(patientTestList);
-		List<Patient> resultTestList = patientService.getAllPatients();
+		List<PatientDTO> resultTestList = patientService.getAllPatients();
 		assertNotNull(resultTestList);
 		assertEquals(5, resultTestList.size());
 		assertEquals("TestNone", resultTestList.get(0).getFirstname());
 	}
 	
 	@Test
-	public void getPatientByIdTest() throws Exception {
+	public void getPatientByIdTest_existingId_returnsPatient() throws Exception {
 		when(patientRepository.findById(anyLong())).thenReturn(Optional.of(patientTestList.get(1)));
-		Patient patientTest = patientService.getPatientById(2L);
+		PatientDTO patientTest = patientService.getPatientById(2L);
 		assertNotNull(patientTest);
 		assertEquals("TestBorderline", patientTest.getFirstname());
 	}
 	
+	@Test
+	public void getPatientByIdTest_wrongId_throwsException() throws Exception {
+		when(patientRepository.findById(anyLong())).thenReturn(Optional.empty());
+		assertThrows(PatientNotFoundException.class, () -> patientService.getPatientById(11L));
+	}
+	
 	@Test 
-	public void getPatientByNamesTest() {
+	public void getPatientByNamesTest_matchingName_returnsPatient() throws Exception {
 		when(patientRepository.findByFirstnameContainsAndLastnameContains(anyString(), anyString())).thenReturn(patientTestList.subList(2, 3));
-		List<Patient> resultTestList = patientService.getPatientByNames("Test", "TestInDanger");
+		List<PatientDTO> resultTestList = patientService.getPatientByNames("Test", "TestInDanger");
 		assertNotNull(resultTestList.get(0));
 		assertEquals("3 Club Road", resultTestList.get(0).getAddress());
 	}
 	
-	@Test
-	public void savePatientTest() throws Exception {
-		Patient patientSaveTest = new Patient("TestSavePatient", "Test", dateFormatter.parse("1986-02-12"), Gender.FEMALE, "5 Crash Boulevard", "555-666-7777");
-		when(patientRepository.save(patientSaveTest)).thenReturn(patientSaveTest);
-		patientSaveTest = patientService.savePatient(patientSaveTest);
-		assertNotNull(patientSaveTest.getId());
-		assertEquals("555-666-7777", patientSaveTest.getPhone());
+	@Test 
+	public void getPatientByNamesTest_wrongName_throwsException() throws Exception {
+		when(patientRepository.findByFirstnameContainsAndLastnameContains(anyString(), anyString())).thenReturn(new ArrayList<Patient>());
+		assertThrows(PatientNotFoundException.class, () -> patientService.getPatientByNames("Wrong", "Name"));
 	}
 	
 	@Test
-	public void updatePatientTest() throws Exception {
+	public void savePatientTest_returnsPatient() throws Exception {
+		Patient patientSaveTest = new Patient("TestSavePatient", "Test", dateFormatter.parse("1986-02-12"), Gender.FEMALE, "5 Crash Boulevard", "555-666-7777");
+		PatientDTO patientDTOSaveTest = new PatientDTO("TestSavePatient", "Test", dateFormatter.parse("1986-02-12"), Gender.FEMALE, "5 Crash Boulevard", "555-666-7777");
+		when(patientRepository.save(any(Patient.class))).thenReturn(patientSaveTest);
+		patientDTOSaveTest = patientService.savePatient(patientDTOSaveTest);
+		assertNotNull(patientDTOSaveTest.getFirstname());
+		assertEquals("555-666-7777", patientDTOSaveTest.getPhone());
+	}
+	
+	@Test
+	public void updatePatientTest_existingId_returnsPatient() throws Exception {
 		Patient patientUpdateTest = new Patient("TestUpdatePatient", "Test", dateFormatter.parse("1924-03-15"), Gender.FEMALE, "6 Off Road", "666-777-9999");
+		PatientDTO patientDTOUpdateTest = new PatientDTO("TestUpdatePatient", "Test", dateFormatter.parse("1924-03-15"), Gender.FEMALE, "6 Off Road", "666-777-9999");
 		when(patientRepository.findById(patientTestList.get(3).getId())).thenReturn(Optional.of(patientTestList.get(3)));
 		when(patientRepository.save(any(Patient.class))).thenReturn(patientUpdateTest);
-		patientUpdateTest = patientService.updatePatient(patientTestList.get(3).getId(), patientUpdateTest);
-		assertNotNull(patientUpdateTest);
-		assertEquals("TestUpdatePatient", patientUpdateTest.getFirstname());
+		patientDTOUpdateTest = patientService.updatePatient(patientTestList.get(3).getId(), patientDTOUpdateTest);
+		assertNotNull(patientDTOUpdateTest);
+		assertEquals("TestUpdatePatient", patientDTOUpdateTest.getFirstname());
 	}
 	
 	@Test
-	public void deletePatientTest() {
+	public void updatePatientTest_wrongId_throwsException() throws Exception {
+		Patient patientUpdateTest = new Patient("TestUpdatePatient", "Test", dateFormatter.parse("1924-03-15"), Gender.FEMALE, "6 Off Road", "666-777-9999");
+		PatientDTO patientDTOUpdateTest = new PatientDTO("TestUpdatePatient", "Test", dateFormatter.parse("1924-03-15"), Gender.FEMALE, "6 Off Road", "666-777-9999");
+		when(patientRepository.findById(anyLong())).thenReturn(Optional.empty());
+		when(patientRepository.save(any(Patient.class))).thenReturn(patientUpdateTest);
+		assertThrows(PatientNotFoundException.class, () -> patientService.updatePatient(patientTestList.get(3).getId(), patientDTOUpdateTest));
+	}
+	
+	@Test
+	public void deletePatientTest_existingId_returnsVoid() throws Exception {
 		long idPatientDelete = patientTestList.get(4).getId();
+		when(patientRepository.findById(anyLong())).thenReturn(Optional.of(patientTestList.get(3)));
 		patientService.deletePatient(idPatientDelete);
+	}
+	
+	@Test
+	public void deletePatientTest_wrongId_throwsException() throws Exception {
+		when(patientRepository.findById(anyLong())).thenReturn(Optional.empty());
+		assertThrows(PatientNotFoundException.class, () -> patientService.deletePatient(11L));
 	}
 }

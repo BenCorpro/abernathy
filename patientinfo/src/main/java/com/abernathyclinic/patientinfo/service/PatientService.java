@@ -2,25 +2,21 @@ package com.abernathyclinic.patientinfo.service;
 
 import java.util.List;
 
-import org.springframework.data.domain.Page;
-
+import com.abernathyclinic.patientinfo.dto.PatientDTO;
 import com.abernathyclinic.patientinfo.exception.PatientNotFoundException;
-import com.abernathyclinic.patientinfo.model.Patient;
 
 public interface PatientService {
 
-	List<Patient> getAllPatients();
+	List<PatientDTO> getAllPatients();
 
-	Patient getPatientById(Long id) throws PatientNotFoundException;
+	PatientDTO getPatientById(Long id) throws PatientNotFoundException;
 
-	List<Patient> getPatientByNames(String lastname, String firstname);
+	List<PatientDTO> getPatientByNames(String lastname, String firstname) throws PatientNotFoundException;
 
-	Patient savePatient(Patient newPatient);
+	PatientDTO savePatient(PatientDTO newPatient);
 
-	Patient updatePatient(Long id, Patient modPatient);
+	PatientDTO updatePatient(Long id, PatientDTO modPatient) throws PatientNotFoundException;
 
-	void deletePatient(Long id);
-
-	Page<Patient> getPatientPage(int page, int size);
+	void deletePatient(Long id) throws PatientNotFoundException;
 
 }
