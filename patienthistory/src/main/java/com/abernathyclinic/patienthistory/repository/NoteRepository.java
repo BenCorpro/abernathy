@@ -10,6 +10,6 @@ import com.abernathyclinic.patienthistory.model.Note;
 @Repository
 public interface NoteRepository extends MongoRepository<Note, String>{
 
-	public List<Note> findByPatientId(Long id);
+	public List<Note> findByPatientIdOrderByCreatedAtDesc(Long id);
 	
 }

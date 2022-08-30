@@ -2,21 +2,23 @@ package com.abernathyclinic.riskreport.util;
 
 public enum Trigger {
 	
-	HEMOGLOBINE_A1C("Hemoglobin A1C"),
-	MICROALBUMINE("Microalbumine"),
-	TAILLE("Height"),
-	POIDS("Weight"),
-	FUMEUR("Smoker"),
-	ANORMAL("Abnormal"),
-	CHOLESTEROL("Cholesterol"),
-	VERTIGE("Dizziness"),
-	RECHUTE("Rechute"),
-	REACTION("Reaction"),
-	ANTICORPS("Antibodies");
+	HEMOGLOBINE_A1C("Hemoglobin A1C", "Hémoglobine A1C"),
+	MICROALBUMINE("Microalbumin", "Microalbumine"),
+	TAILLE("Height", "Taille"),
+	POIDS("Weight", "Poids"),
+	FUMEUR("Smoker", "Fumeur"),
+	ANORMAL("Abnormal", "Anormal"),
+	CHOLESTEROL("Cholesterol", "Cholestérol"),
+	VERTIGE("Dizziness", "Vertige"),
+	RECHUTE("Relapse", "Rechute"),
+	REACTION("Reaction", "Réaction"),
+	ANTICORPS("Antibodies", "Anticorps");
 	
-	public final String value;
+	public final String englishTerm;
+	public final String frenchTerm;
 	
-	private Trigger(String value) {
-		this.value = value;
+	private Trigger(String englishTerm, String frenchTerm) {
+		this.englishTerm = englishTerm;
+		this.frenchTerm = frenchTerm;
 	}
 }

@@ -75,7 +75,7 @@ public class NoteServiceTest {
 	
 	@Test
 	public void getNoteByPatientIdTest_existingId_returnsNoteList() throws Exception {
-		when(noteRepository.findByPatientId(3L)).thenReturn(noteTestList.subList(2, 3));
+		when(noteRepository.findByPatientIdOrderByCreatedAtDesc(3L)).thenReturn(noteTestList.subList(2, 3));
 		List<NoteDTO> resultTestList = noteService.getNoteByPatientId(3L);
 		assertNotNull(resultTestList.get(0));
 		assertEquals("Patient states that they are short term Smoker", resultTestList.get(0).getRecommendation());
@@ -83,7 +83,7 @@ public class NoteServiceTest {
 	
 	@Test
 	public void getNoteByPatientIdTest_wrongId_throwsException() throws Exception {
-		when(noteRepository.findByPatientId(3L)).thenReturn(new ArrayList<Note>());
+		when(noteRepository.findByPatientIdOrderByCreatedAtDesc(3L)).thenReturn(new ArrayList<Note>());
 		assertThrows(NoteNotFoundException.class, () -> noteService.getNoteByPatientId(11L));
 	}
 	

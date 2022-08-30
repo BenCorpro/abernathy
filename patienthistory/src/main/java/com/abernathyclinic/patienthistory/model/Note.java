@@ -1,5 +1,7 @@
 package com.abernathyclinic.patienthistory.model;
 
+import java.time.LocalDateTime;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -8,6 +10,8 @@ public class Note {
 
 	@Id
 	private String id;
+	private LocalDateTime createdAt;
+	private LocalDateTime updatedAt;
 	private long patientId;
 	private String patientName;
 	private String recommendation;
@@ -29,6 +33,20 @@ public class Note {
 	public void setId(String id) {
 		this.id = id;
 	}
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public LocalDateTime getUpdatedAt() {
+		return updatedAt;
+	}
+	public void setUpdatedAt(LocalDateTime updatedAt) {
+		this.updatedAt = updatedAt;
+	}
 	public long getPatientId() {
 		return patientId;
 	}
@@ -47,6 +65,5 @@ public class Note {
 	public void setRecommendation(String recommendation) {
 		this.recommendation = recommendation;
 	}
-	
 	
 }

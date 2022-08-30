@@ -20,9 +20,9 @@ public class PatientDTO {
 	private Date birthdate;
 	@NotNull
 	private Gender gender;
-	@Pattern(regexp = "[a-zA-Z0-9-\\s]{3,50}")
+	@Pattern(regexp = "[a-zA-Z0-9-\\s]{3,50}", message = "L'adresse ne doit contenir que lettres et chiffres")
 	private String address;
-	@Pattern(regexp = "(?:(?:\\+|00)33[\\s.-]{0,3}(?:\\(0\\)[\\s.-]{0,3})?|0)[1-9](?:(?:[\\s.-]?\\d{2}){4}|\\d{2}(?:[\\s.-]?\\d{3}){2})")
+	@Pattern(regexp = "[0-9-\\s]{3,12}", message = "Le numéro de téléphone ne doit contenir que des chiffres")
 	private String phone;
 	
 	

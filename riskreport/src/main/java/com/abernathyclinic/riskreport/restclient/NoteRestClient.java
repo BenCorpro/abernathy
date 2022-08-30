@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.abernathyclinic.riskreport.model.Note;
 
-@FeignClient(name = "patient-histo-service", url = "http://localhost:8082")
+@FeignClient(name = "patient-histo-service", url = "${pathisto.url}")
 public interface NoteRestClient {
 
 	@GetMapping("/notes/{patientId}")

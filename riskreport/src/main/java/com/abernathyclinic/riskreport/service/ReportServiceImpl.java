@@ -45,7 +45,8 @@ public class ReportServiceImpl implements ReportService {
 		boolean underThirty = AgeCalculator.isUnderThirtyFunction(patient.getBirthdate());
 		int riskOccurences = 0;
 		for(Trigger trigger: Trigger.values()) {
-			riskOccurences += (int)patientNotes.stream().filter(note -> note.getRecommendation().contains(trigger.value))
+			riskOccurences += patientNotes.stream().filter(note -> note.getRecommendation().contains(trigger.englishTerm) || 
+																	note.getRecommendation().contains(trigger.frenchTerm))
 													.count();
 		}
 		switch(riskOccurences) {
@@ -89,6 +90,8 @@ public class ReportServiceImpl implements ReportService {
 			case 8:
 			default: riskAssess = Risk.EarlyOnset;
 		}
-		return new AssessmentDTO(patient.getId(), patient.getFirstname(), patientAge, riskAssess);
+		StringBuilder strName = new StringBuilder();
+		String patientName = strName.append(patient.getLastname()).append(" ").append(patient.getFirstname()).toString();
+		return new AssessmentDTO(patient.getId(), patientName, patientAge, riskAssess);
 	}
 }

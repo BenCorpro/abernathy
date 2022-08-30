@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.abernathyclinic.riskreport.model.Patient;
 
-@FeignClient(name = "patient-info-service", url = "http://localhost:8081")
+@FeignClient(name = "patient-info-service", url = "${patinfo.url}")
 public interface PatientRestClient {
 
 	@GetMapping("/patient/{id}")

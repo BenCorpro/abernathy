@@ -1,5 +1,6 @@
 package com.abernathyclinic.patienthistory.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,7 +42,7 @@ public class NoteServiceImpl implements NoteService {
 	
 	@Override
 	public List<NoteDTO> getNoteByPatientId(long patientId) throws NoteNotFoundException{
-		List<Note> notes = noteRepository.findByPatientId(patientId);
+		List<Note> notes = noteRepository.findByPatientIdOrderByCreatedAtDesc(patientId);
 		if(notes.isEmpty()) throw new NoteNotFoundException("Notes for patient " + patientId + " not found!");
 		List<NoteDTO> notesDTO = notes.stream().map(note -> noteMapper.fromNote(note))
 												.collect(Collectors.toList());
@@ -51,6 +52,7 @@ public class NoteServiceImpl implements NoteService {
 	@Override
 	public NoteDTO saveNote(NoteDTO newNote) {
 		Note note = noteMapper.fromNoteDTO(newNote);
+		note.setCreatedAt(LocalDateTime.now());
 		note = noteRepository.insert(note);
 		return noteMapper.fromNote(note);
 	}
@@ -59,6 +61,7 @@ public class NoteServiceImpl implements NoteService {
 	public NoteDTO updateNote(String id, NoteDTO modNote) throws NoteNotFoundException {
 		Note noteToUpdate = noteRepository.findById(id).orElseThrow(() -> new NoteNotFoundException("Note " + id + " not found!"));
 		noteToUpdate.setRecommendation(modNote.getRecommendation());
+		noteToUpdate.setUpdatedAt(LocalDateTime.now());
 		Note note = noteRepository.save(noteToUpdate);
 		return noteMapper.fromNote(note);
 	}
