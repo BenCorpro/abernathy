@@ -1,0 +1,9 @@
+<mat-card>
+    <mat-card-title>
+        <h3>Nom: {{patient.lastname | uppercase}} Prénom: {{patient.firstname}}</h3>
+    </mat-card-title>
+    <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="onPatientAccess()">ACCEDER</button>
+    </mat-card-actions>
+</mat-card>
+

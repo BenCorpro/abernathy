@@ -1,0 +1,18 @@
+.mat-toolbar{
+  display:flex;
+  height:120px;
+  background-color: #f5f5f5;
+}
+
+.mat-toolbar-row{
+  justify-content: center;
+}
+
+button{
+  margin: 5px;
+}
+  
+.active {
+  color: #666;
+  text-decoration: underline;
+}

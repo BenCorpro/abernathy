@@ -1,0 +1,28 @@
+.container{
+  display: flex;
+  justify-content: space-around;
+}
+
+.mat-card{
+  margin-top: 20px;
+  width: fit-content;
+  min-width: 35%;
+  height: fit-content;
+  min-height: 40%;
+}
+
+form{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.mat-form-field{
+  width: 50%;
+  margin-top: 10px;
+}
+
+.mat-card-actions{
+  margin: auto;
+}

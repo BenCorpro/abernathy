@@ -1,0 +1,61 @@
+<div class="container">
+<mat-card>
+        <mat-card-title>
+            <h2>NOUVELLE NOTE</h2>
+        </mat-card-title>
+        <mat-card-subtitle>
+            <button mat-button color="primary" routerLink="/patient/{{patientId}}">Retour</button>
+        </mat-card-subtitle>
+    <mat-card-content>
+        <form [formGroup]="noteForm">
+            <mat-form-field>
+                <mat-label>Patient ID</mat-label>
+                <input matInput formControlName="patientId" [readonly]="true">
+                <mat-error *ngIf=" noteForm.controls['patientId'].touched
+                && noteForm.controls['patientId'].errors 
+                && noteForm.controls['patientId'].errors!['required']">
+                L'identifiant du patient est requis</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Patient Name</mat-label>
+                <input matInput formControlName="patientName" [readonly]="true">
+                <mat-error *ngIf=" noteForm.controls['patientName'].touched
+                && noteForm.controls['patientName'].errors 
+                && noteForm.controls['patientName'].errors!['required']">
+                Le nom du patient est requis</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Recommendation</mat-label>
+                <textarea matInput formControlName="recommendation"></textarea>
+                <mat-error *ngIf=" noteForm.controls['recommendation'].touched
+                && noteForm.controls['recommendation'].errors 
+                && noteForm.controls['recommendation'].errors!['required']">
+                Une note est requise</mat-error>
+            </mat-form-field>
+            <mat-card-actions>
+                <button mat-raised-button color="primary" (click)="onSubmitNoteForm()" [disabled]="noteForm.invalid">Enregistrer</button>
+            </mat-card-actions>
+        </form>
+    </mat-card-content>
+</mat-card>
+<mat-card *ngIf="errorMessage">
+    <mat-card-title>
+        <h2>Erreur</h2>
+        <mat-icon fontIcon="warning"></mat-icon>
+    </mat-card-title>
+    <mat-card-content id="errcontent"><p>{{errorMessage}}</p></mat-card-content>
+    <mat-card-actions id="erractions">    
+        <button mat-button color="primary" routerLink="/patient/{{patientId}}">Retour</button>
+    </mat-card-actions>
+</mat-card>
+</div>
+
+<mat-card *ngIf="notePreview$ | async as note">
+    <mat-card-title>
+        <h3>Nom du patient: {{note.patientName | uppercase}}</h3>
+    </mat-card-title>
+    <mat-card-content>
+        <p>Id du patient: {{note.patientId}}</p>
+        <p>Recommendations: {{note.recommendation}}</p>
+    </mat-card-content>
+</mat-card>

@@ -1,0 +1,46 @@
+
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #sidenav class="sidenav mat-elevation-z10" 
+                [opened]="!isScreenSmall" 
+                [mode]="isScreenSmall ? 'over' : 'side'">
+                <mat-toolbar>
+                    <form [formGroup]="searchForm">
+                    <mat-toolbar-row class="entete">
+                        <h3>RECHERCHER UN PATIENT</h3>
+                    </mat-toolbar-row>
+                    <mat-divider></mat-divider>
+                    <mat-toolbar-row>
+                        <mat-label>Nom</mat-label>
+                        <input matInput formControlName="lastname">
+                    </mat-toolbar-row>
+                    <mat-toolbar-row>
+                        <mat-label>Prénom</mat-label>
+                        <input matInput formControlName="firstname">
+                    </mat-toolbar-row>
+                    <mat-toolbar-row>
+                        <button color="primary" mat-raised-button (click)="onSearchForm()">RECHERCHER</button>
+                    </mat-toolbar-row>
+                    </form>
+                </mat-toolbar>
+                <mat-card *ngIf="errorMessage">
+                    <mat-card-title>
+                        <h2>Erreur</h2>
+                        <mat-icon fontIcon="warning"></mat-icon>
+                    </mat-card-title>
+                    <mat-card-content><p>{{errorMessage}}</p></mat-card-content>
+                    <mat-card-actions>    
+                        <button mat-button color="primary" (click)="reloadPage()">Retour</button>
+                    </mat-card-actions>
+                </mat-card>
+    </mat-sidenav>
+    <div class="sidenav-content">
+        <button mat-raised-button color="primary" class="sidenav-toggle" (click)="sidenav.toggle()">Rechecher un patient</button>
+        <mat-nav-list>
+            <mat-list-item *ngFor="let patient of patients$ | async">
+                <a matLine routerLink="../patient/{{patient.id}}">
+                    <h3>Nom: {{patient.lastname | uppercase}} Prénom: {{patient.firstname}}</h3>
+                </a>
+            </mat-list-item>
+        </mat-nav-list>
+    </div>
+</mat-sidenav-container>

@@ -1,0 +1,58 @@
+<div class="container">
+<mat-card *ngIf="errorMessage">
+    <mat-card-title>Erreur</mat-card-title>
+    <mat-card-content>{{errorMessage}}</mat-card-content>
+</mat-card>
+
+<mat-card>
+    <mat-card-title-group>
+        <mat-card-title>
+            <h2>MODIFIER NOTE</h2>
+        </mat-card-title>
+        <mat-card-subtitle>
+            <button mat-button color="primary" routerLink="/listnotes/{{note.patientId}}">Retour</button>
+        </mat-card-subtitle>
+    </mat-card-title-group>
+    <mat-card-content>
+        <form [formGroup]="noteForm">
+            <mat-form-field>
+                <mat-label>Date de création</mat-label>
+                <input matInput formControlName="createdAt" [readonly]="true">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Patient ID</mat-label>
+                <input matInput formControlName="patientId" [readonly]="true">
+                <mat-error *ngIf=" noteForm.controls['patientId'].touched
+                && noteForm.controls['patientId'].errors 
+                && noteForm.controls['patientId'].errors!['required']">
+                L'identifiant du patient est requis</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Patient Name</mat-label>
+                <input matInput formControlName="patientName" [readonly]="true">
+                <mat-error *ngIf=" noteForm.controls['patientName'].touched
+                && noteForm.controls['patientName'].errors 
+                && noteForm.controls['patientName'].errors!['required']">
+                Le nom du patient est requis</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Recommendation</mat-label>
+                <textarea matInput formControlName="recommendation"></textarea>
+                <mat-error *ngIf=" noteForm.controls['recommendation'].touched
+                && noteForm.controls['recommendation'].errors 
+                && noteForm.controls['recommendation'].errors!['required']">
+                Une note est requise</mat-error>
+            </mat-form-field>
+            <mat-card-actions>
+                <button mat-raised-button color="primary" (click)="onUpdateNoteForm()" [disabled]="noteForm.invalid">ENREGISTRER</button>
+            </mat-card-actions>
+        </form>
+    </mat-card-content>
+</mat-card>  
+</div>
+
+<div class="note-card" *ngIf="notePreview$ | async as note">
+    <h3>Nom du patient: {{note.patientName | uppercase}}</h3>
+    <p>Id du patient: {{note.patientId}}</p>
+    <p>Recommendations: {{note.recommendation}}</p>
+</div>

@@ -1,0 +1,49 @@
+.container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.mat-card{
+  margin-top: 20px;
+  width: fit-content;
+  min-width: 35%;
+  height: fit-content;
+  min-height: 40%;
+}
+
+form{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.mat-form-field{
+  width: 90%;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+.genderfield{
+  margin-left: 10px;
+}
+
+.mat-button-toggle-group{
+  margin-left: 10px;
+}
+
+.mat-card-actions{
+  margin: auto;
+}
+
+.mat-card-title{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mat-card-subtitle{
+  margin-left: 20px;
+}

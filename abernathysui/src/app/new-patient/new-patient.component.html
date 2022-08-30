@@ -1,0 +1,102 @@
+<div class="container">
+<mat-card *ngIf="errorMessage">
+    <mat-card-title>Erreur</mat-card-title>
+    <mat-card-content>{{errorMessage}}</mat-card-content>
+</mat-card>
+<mat-card>
+    <mat-card-title>
+        <h2>NOUVEAU PATIENT</h2>
+    </mat-card-title>
+    <mat-card-subtitle>
+        <button mat-button color="primary" routerLink="/patients">Retour</button>
+    </mat-card-subtitle>
+    <mat-card-content>
+        <form [formGroup]="patientForm">
+            <mat-form-field>
+                <mat-label>Prénom</mat-label>
+                <input matInput formControlName="firstname">
+                <mat-error *ngIf=" patientForm.controls['firstname'].touched
+                && patientForm.controls['firstname'].errors 
+                && patientForm.controls['firstname'].errors!['required']">
+                Le prénom est requis</mat-error>
+                <mat-error *ngIf=" patientForm.controls['firstname'].touched
+                && patientForm.controls['firstname'].errors 
+                && patientForm.controls['firstname'].errors!['pattern']">
+                Le prénom doit être valide et comporter 3 lettres minimum
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Nom</mat-label>
+                <input matInput formControlName="lastname">
+                <mat-error *ngIf=" patientForm.controls['lastname'].touched
+                && patientForm.controls['lastname'].errors 
+                && patientForm.controls['lastname'].errors!['required']">
+                Le nom est requis
+                </mat-error>
+                <mat-error *ngIf=" patientForm.controls['lastname'].touched
+                && patientForm.controls['lastname'].errors 
+                && patientForm.controls['lastname'].errors!['pattern']">
+                Le nom doit être valide et comporter 3 lettres minimum
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Date de naissance</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="birthdate">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf=" patientForm.controls['birthdate'].touched
+                && patientForm.controls['birthdate'].errors 
+                && patientForm.controls['birthdate'].errors!['required']">
+                La date de naissance est requise
+                </mat-error>
+            </mat-form-field>
+            <div class="genderfield">
+            <mat-label>Genre</mat-label>
+            <mat-button-toggle-group formControlName="gender">
+                <mat-button-toggle value="MALE">Male</mat-button-toggle>
+                <mat-button-toggle value="FEMALE">Female</mat-button-toggle>
+                <mat-error *ngIf=" patientForm.controls['gender'].touched
+                && patientForm.controls['gender'].errors 
+                && patientForm.controls['gender'].errors!['required']">
+                Le genre est requis
+                </mat-error>
+            </mat-button-toggle-group>
+            </div>
+            <mat-form-field>
+                <mat-label>Adresse</mat-label>
+                <input matInput formControlName="address">
+                <mat-error *ngIf=" patientForm.controls['address'].touched
+                && patientForm.controls['address'].errors 
+                && patientForm.controls['address'].errors!['pattern']">
+                L'adresse doit être valide et comporter 3 caractères minimum
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Téléphone</mat-label>
+                <input matInput formControlName="phone">
+                <mat-error *ngIf=" patientForm.controls['phone'].touched
+                && patientForm.controls['phone'].errors 
+                && patientForm.controls['phone'].errors!['pattern']">
+                Le téléphone doit être valide
+                </mat-error>
+            </mat-form-field>
+            <mat-card-actions>               
+                <button mat-raised-button color="primary" (click)="onSubmitForm()" [disabled]="patientForm.invalid">ENREGISTRER</button>
+            </mat-card-actions> 
+        </form>
+    </mat-card-content>
+</mat-card>
+
+<mat-card *ngIf="patientPreview$ | async as patient">
+    <mat-card-title>
+        <h3>Nom: {{patient.lastname | uppercase}} Prénom: {{patient.firstname}}</h3>
+    </mat-card-title>
+    <mat-card-content>
+        <p>Date de naissance: {{patient.birthdate | date: 'dd/MM/yyyy'}}</p>
+        <p>Genre: {{patient.gender}}</p>
+        <p>Addresse: {{patient.address}}</p>
+        <p>Téléphone: {{patient.phone}}</p>
+    </mat-card-content>
+</mat-card>
+</div>
+

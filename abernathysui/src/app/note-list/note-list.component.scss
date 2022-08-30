@@ -1,0 +1,45 @@
+.container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.mat-card{
+  margin-top: 20px;
+  width: fit-content;
+  min-width: 35%;
+  height: fit-content;
+  min-height: 40%;
+}
+
+.mat-card-actions{
+  display: flex;
+  justify-content: space-around;
+}
+
+.mat-card-actions > button {
+  width: 50%;
+  margin-bottom: 10px;
+}
+
+.mat-card-actions{
+  margin: auto;
+}
+
+.mat-card-title{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.mat-card-content{
+  display:flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.mat-icon{
+  color: orange;
+}

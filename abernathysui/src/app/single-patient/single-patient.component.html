@@ -1,0 +1,49 @@
+<div class="container">
+<mat-card *ngIf="patient$ | async as patient">
+    <mat-card-title>
+        <h2>Nom: {{patient.lastname | uppercase}} Prénom: {{patient.firstname}}</h2>
+    </mat-card-title>
+    <mat-card-subtitle>
+        <button mat-button color="primary" routerLink="/patients">Retour</button>
+    </mat-card-subtitle>
+    <mat-card-content>
+        <p>Date de naissance: {{patient.birthdate | date: 'dd/MM/yyyy'}}</p>
+        <p>Genre: {{patient.gender}}</p>
+        <p>Addresse: {{patient.address}}</p>
+        <p>Téléphone: {{patient.phone}}</p>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button color="primary" [matMenuTriggerFor]="actionsMenu">ACTIONS</button>
+        <mat-menu #actionsMenu="matMenu">
+            <button mat-menu-item [matMenuTriggerFor]="patientActions">Patient</button>
+            <button mat-menu-item [matMenuTriggerFor]="noteActions">Notes</button>
+            <button mat-menu-item [matMenuTriggerFor]="assessActions">Risques</button>
+        </mat-menu>
+        <mat-menu #patientActions="matMenu">
+            <button mat-menu-item (click)="onPatientUpdate(patient.id)">MODIFIER</button>
+            <button mat-menu-item (click)="onPatientDelete(patient.id)">SUPPRIMER</button>
+        </mat-menu>
+        <mat-menu #noteActions="matMenu">
+            <button mat-menu-item (click)="onAddNote(patient.id)">AJOUTER UNE NOTE</button>
+            <button mat-menu-item (click)="onNoteRequest(patient.id)">AFFICHER LES NOTES</button>
+        </mat-menu>
+        <mat-menu #assessActions="matMenu">
+            <button mat-menu-item (click)="onAssessRisk(patient.id)">CALCULER LE RISQUE DE DIABÈTE</button>
+        </mat-menu>
+    </mat-card-actions>
+</mat-card>
+<app-assessment *ngIf="assessment$ | async as assessment" [assessment]="assessment"></app-assessment>
+<mat-card *ngIf="errorMessage">
+    <mat-card-title>
+        <h2>Erreur</h2>
+        <mat-icon fontIcon="warning"></mat-icon>
+    </mat-card-title>
+    <mat-card-content id="errcontent"><p>{{errorMessage}}</p></mat-card-content>
+    <mat-card-actions>    
+        <button mat-button color="primary" (click)="reloadPage()">Retour</button>
+    </mat-card-actions>
+</mat-card>
+</div>
+
+
+

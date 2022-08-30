@@ -1,0 +1,18 @@
+<mat-card>
+    <mat-card-title-group>
+    <mat-card-title>
+        <h3>Nom du patient: {{note.patientName | uppercase}}</h3>
+    </mat-card-title>
+    <mat-card-subtitle>
+        <button mat-button color="primary" routerLink="/patient/{{note.patientId}}">Retour</button>
+    </mat-card-subtitle>
+    </mat-card-title-group>
+    <mat-card-content>
+        <p>Recommendations du praticien: {{note.recommendation}}</p>
+        <p>Date de création: {{note.createdAt | date: 'le dd/MM/yyyy à HH:mm'}}</p>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="onNoteUpdate(note.id)">MODIFIER</button>
+        <button mat-raised-button color="primary" (click)="onNoteDelete(note.id)">SUPPRIMER</button>
+    </mat-card-actions>
+</mat-card>

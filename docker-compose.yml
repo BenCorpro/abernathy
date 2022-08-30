@@ -1,0 +1,73 @@
+version: "3"
+services:
+ patinfodb:
+  container_name: patinfodb
+  image: mysql:latest
+  volumes:
+   - mysql_data:/var/lib/mysql
+  ports:
+   - 3307:3306
+  environment:
+   MYSQL_ROOT_PASSWORD: rootpwd
+   MYSQL_DATABASE: patientinfosdb
+   MYSQL_USER: aberuser
+   MYSQL_PASSWORD: aberpwd
+ pathistodb:
+  container_name: pathistodb
+  image: mongo:latest
+  volumes:
+   - mongo_data:/data/db
+  ports:
+   - 27017:27017
+ patinfo:
+  container_name: patinfo
+  build: ./patientinfo
+  depends_on:
+   - patinfodb
+  ports:
+   - 8081:8081
+  links:
+   - patinfodb
+  environment:
+   SPRING_DATASOURCE_URL: jdbc:mysql://patinfodb:3306/patientinfosdb?serverTimezone=UTC
+   SPRING_DATASOURCE_USERNAME: aberuser
+   SPRING_DATASOURCE_PASSWORD: aberpwd
+ pathisto:
+  container_name: pathisto
+  build: ./patienthistory
+  depends_on:
+   - pathistodb
+  ports:
+   - 8082:8082
+  links:
+   - pathistodb
+  environment:
+   SPRING_DATA_MONGODB_HOST: pathistodb
+ riskreport:
+  container_name: riskreport
+  build: ./riskreport
+  depends_on:
+   - patinfo
+   - pathisto
+  ports:
+   - 8080:8080
+  links:
+   - patinfo
+   - pathisto
+  environment:
+   SPRING_PROFILES_ACTIVE: prod
+ abernathysui:
+  container_name: abernathysui
+  build: ./abernathysui
+  depends_on:
+   - patinfo
+   - pathisto
+  ports:
+   - 80:80
+  links:
+   - patinfo
+   - pathisto
+   - riskreport
+volumes:
+ mysql_data: {}
+ mongo_data: {}
