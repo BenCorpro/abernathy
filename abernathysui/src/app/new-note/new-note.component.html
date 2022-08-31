@@ -49,13 +49,3 @@
     </mat-card-actions>
 </mat-card>
 </div>
-
-<mat-card *ngIf="notePreview$ | async as note">
-    <mat-card-title>
-        <h3>Nom du patient: {{note.patientName | uppercase}}</h3>
-    </mat-card-title>
-    <mat-card-content>
-        <p>Id du patient: {{note.patientId}}</p>
-        <p>Recommendations: {{note.recommendation}}</p>
-    </mat-card-content>
-</mat-card>

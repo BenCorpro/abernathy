@@ -57,7 +57,7 @@ export class SinglePatientComponent implements OnInit {
   }
 
   reloadPage(){
-    window.location.reload();
+    this.ngOnInit();
   }
 
 }

@@ -20,12 +20,30 @@ export class PatientService {
       }
 
       updatePatient(patientId: number, formValue: {firstname: string, lastname: string, birthdate: Date, gender: 'MALE' | 'FEMALE', address: string, phone: string }): Observable<Patient> {
-        let modPatient: Patient = {...formValue, id: patientId};
+        let modPatient: Patient;
+        if(formValue.address == "" && formValue.phone == "") {
+          modPatient = {...formValue, id: patientId, address: null, phone: null}
+        } else if (formValue.phone == "") {
+          modPatient = {...formValue, id: patientId, phone: null}
+        } else if (formValue.address == "") {
+          modPatient = {...formValue, id: patientId, address: null}
+        } else {
+          modPatient = {...formValue, id: patientId};
+        };
         return this.http.put<Patient>(environment.patientHost+`/patient/update/${patientId}`, modPatient);
       }
 
       addPatient(formValue: {firstname: string, lastname: string, birthdate: Date, gender: 'MALE' | 'FEMALE', address: string, phone: string }): Observable<Patient> {
-        let newPatient: Patient = {...formValue, id: 0};  
+        let newPatient: Patient;
+        if(formValue.address == "" && formValue.phone == "") {
+          newPatient = {...formValue, id: 0, address: null, phone: null}
+        } else if (formValue.phone == "") {
+          newPatient = {...formValue, id: 0, phone: null}
+        } else if (formValue.address == "") {
+          newPatient = {...formValue, id: 0, address: null}
+        } else {
+          newPatient = {...formValue, id: 0};
+        };
         return this.http.post<Patient>(environment.patientHost+`/patient/add`, newPatient);
         }
 

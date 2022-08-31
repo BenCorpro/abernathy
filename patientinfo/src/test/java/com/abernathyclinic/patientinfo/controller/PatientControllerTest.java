@@ -91,7 +91,7 @@ public class PatientControllerTest {
 	
 	@Test
 	public void testGetPatientByNames_matchingName_returnsPatient() throws Exception {
-		when(patientService.getPatientByNames("", "bord")).thenReturn(patientTestList.subList(1, 2));
+		when(patientService.getPatientByNames("bord", "")).thenReturn(patientTestList.subList(1, 2));
 		mockMvc.perform(get("/patient?given=bord&family="))
 		 		.andExpect(status().isOk())
 		 		.andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -100,7 +100,7 @@ public class PatientControllerTest {
 	
 	@Test
 	public void testGetPatientByNames_wrongName_returnsNotFound() throws Exception {
-		when(patientService.getPatientByNames("", "wrong")).thenThrow(new PatientNotFoundException("Patient with firstname: and lastname: wrong not found!"));
+		when(patientService.getPatientByNames("wrong", "")).thenThrow(new PatientNotFoundException("Patient with firstname: and lastname: wrong not found!"));
 		mockMvc.perform(get("/patient?given=wrong&family="))
 		 		.andExpect(status().isNotFound())
 		 		.andExpect(content().contentType(MediaType.APPLICATION_JSON))

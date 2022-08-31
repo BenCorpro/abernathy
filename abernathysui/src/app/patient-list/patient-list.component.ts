@@ -58,6 +58,6 @@ export class PatientListComponent implements OnInit {
   }
 
   reloadPage(){
-    window.location.reload();
+    location.replace('patients');
   }
 }

@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.abernathyclinic.patienthistory.dto.NoteDTO;
@@ -14,6 +16,8 @@ import com.abernathyclinic.patienthistory.repository.NoteRepository;
 
 @Service
 public class NoteServiceImpl implements NoteService {
+	
+	private static Logger logger = LoggerFactory.getLogger(NoteServiceImpl.class); 
 
 	private NoteRepository noteRepository;
 	private NoteMapper noteMapper;
@@ -30,6 +34,7 @@ public class NoteServiceImpl implements NoteService {
 		List<Note> notes = noteRepository.findAll();
 		List<NoteDTO> noteDTOs = notes.stream().map(note -> noteMapper.fromNote(note))
 												.collect(Collectors.toList());
+		logger.info("Retrieving all notes");
 		return noteDTOs;
 	}
 	
@@ -37,6 +42,7 @@ public class NoteServiceImpl implements NoteService {
 	public NoteDTO getNoteById(String id) throws NoteNotFoundException {
 		Note note = noteRepository.findById(id).orElseThrow(() -> new NoteNotFoundException("Note " + id + " not found!"));
 		NoteDTO noteDTO = noteMapper.fromNote(note);
+		logger.info("Retrieving note with id " + noteDTO.getId());
 		return noteDTO;
 	}
 	
@@ -46,6 +52,7 @@ public class NoteServiceImpl implements NoteService {
 		if(notes.isEmpty()) throw new NoteNotFoundException("Notes for patient " + patientId + " not found!");
 		List<NoteDTO> notesDTO = notes.stream().map(note -> noteMapper.fromNote(note))
 												.collect(Collectors.toList());
+		logger.info("Retrieving notes patient with id " + patientId);
 		return notesDTO;
 	}
 	
@@ -54,6 +61,7 @@ public class NoteServiceImpl implements NoteService {
 		Note note = noteMapper.fromNoteDTO(newNote);
 		note.setCreatedAt(LocalDateTime.now());
 		note = noteRepository.insert(note);
+		logger.info("Saving new note for patient " + note.getPatientName());
 		return noteMapper.fromNote(note);
 	}
 	
@@ -63,12 +71,14 @@ public class NoteServiceImpl implements NoteService {
 		noteToUpdate.setRecommendation(modNote.getRecommendation());
 		noteToUpdate.setUpdatedAt(LocalDateTime.now());
 		Note note = noteRepository.save(noteToUpdate);
+		logger.info("Updating note with id " + note.getId());
 		return noteMapper.fromNote(note);
 	}
 	
 	@Override
 	public void deleteNote(String id) throws NoteNotFoundException {
 		noteRepository.findById(id).orElseThrow(() -> new NoteNotFoundException("Note " + id + " not found!"));
+		logger.info("Deleting note with id " + id);
 		noteRepository.deleteById(id);
 	}
 	

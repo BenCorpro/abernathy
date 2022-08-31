@@ -13,7 +13,6 @@ import { PatientService } from '../services/patient.service';
 export class NewPatientComponent implements OnInit {
 
   patientForm!: FormGroup;
-  patientPreview$!: Observable<Patient>;
   errorMessage!: string;
   dateRegex!: RegExp;
   phoneRegex!: RegExp;
@@ -39,13 +38,6 @@ export class NewPatientComponent implements OnInit {
     },{
       updateOn: 'blur'
     });
-
-    this.patientPreview$ = this.patientForm.valueChanges.pipe(
-      map(formValue => ({
-        ...formValue,
-        id: 0
-      }))
-    );
   }
 
   onSubmitForm(): void {

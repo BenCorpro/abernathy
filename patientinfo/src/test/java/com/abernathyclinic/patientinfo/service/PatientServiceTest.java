@@ -79,7 +79,7 @@ public class PatientServiceTest {
 	@Test 
 	public void getPatientByNamesTest_matchingName_returnsPatient() throws Exception {
 		when(patientRepository.findByFirstnameContainsAndLastnameContains(anyString(), anyString())).thenReturn(patientTestList.subList(2, 3));
-		List<PatientDTO> resultTestList = patientService.getPatientByNames("Test", "TestInDanger");
+		List<PatientDTO> resultTestList = patientService.getPatientByNames("TestInDanger", "Test");
 		assertNotNull(resultTestList.get(0));
 		assertEquals("3 Club Road", resultTestList.get(0).getAddress());
 	}

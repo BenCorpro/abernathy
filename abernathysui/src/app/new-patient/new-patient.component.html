@@ -1,8 +1,4 @@
 <div class="container">
-<mat-card *ngIf="errorMessage">
-    <mat-card-title>Erreur</mat-card-title>
-    <mat-card-content>{{errorMessage}}</mat-card-content>
-</mat-card>
 <mat-card>
     <mat-card-title>
         <h2>NOUVEAU PATIENT</h2>
@@ -86,17 +82,12 @@
         </form>
     </mat-card-content>
 </mat-card>
-
-<mat-card *ngIf="patientPreview$ | async as patient">
-    <mat-card-title>
-        <h3>Nom: {{patient.lastname | uppercase}} Prénom: {{patient.firstname}}</h3>
+<mat-card *ngIf="errorMessage">
+    <mat-card-title id="errortitle">
+        <h2>Erreur</h2>
+        <mat-icon fontIcon="warning"></mat-icon>
     </mat-card-title>
-    <mat-card-content>
-        <p>Date de naissance: {{patient.birthdate | date: 'dd/MM/yyyy'}}</p>
-        <p>Genre: {{patient.gender}}</p>
-        <p>Addresse: {{patient.address}}</p>
-        <p>Téléphone: {{patient.phone}}</p>
-    </mat-card-content>
+    <mat-card-content id="errcontent"><p>{{errorMessage}}</p></mat-card-content>
 </mat-card>
 </div>
 

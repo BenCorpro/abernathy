@@ -9,10 +9,18 @@
 
 .mat-card-title{
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
+.mat-icon{
+  color: navy;
+}
+
 .mat-card-content{
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
   margin-top: 20px;
 }

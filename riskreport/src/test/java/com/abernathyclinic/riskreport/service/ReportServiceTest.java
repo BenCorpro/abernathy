@@ -53,10 +53,10 @@ public class ReportServiceTest {
 	
 	@BeforeAll
 	public void setUp() throws Exception{
-		Patient patientTestOne = new Patient(1L, "TestNone", "Test", dateFormatter.parse("1966-12-31"), Gender.FEMALE, "1 Brookside St", "100-222-3333");
-		Patient patientTestTwo = new Patient(2L, "TestBorderline", "Test", dateFormatter.parse("1945-06-24"), Gender.MALE, "2 High St", "200-333-4444");
-		Patient patientTestThree = new Patient(3L, "TestInDanger", "Test", dateFormatter.parse("2004-06-18"), Gender.MALE, "3 Club Road", "300-444-5555");
-		Patient patientTestFour = new Patient(4L, "TestEarlyOnset", "Test", dateFormatter.parse("2002-06-28"), Gender.FEMALE, "4 Valley Drive", "400-555-6666");
+		Patient patientTestOne = new Patient(1L, "Test", "TestNone", dateFormatter.parse("1966-12-31"), Gender.FEMALE, "1 Brookside St", "100-222-3333");
+		Patient patientTestTwo = new Patient(2L, "Test", "TestBorderline", dateFormatter.parse("1945-06-24"), Gender.MALE, "2 High St", "200-333-4444");
+		Patient patientTestThree = new Patient(3L, "Test", "TestInDanger", dateFormatter.parse("2004-06-18"), Gender.MALE, "3 Club Road", "300-444-5555");
+		Patient patientTestFour = new Patient(4L, "Test", "TestEarlyOnset", dateFormatter.parse("2002-06-28"), Gender.FEMALE, "4 Valley Drive", "400-555-6666");
 		listPatientsTest.add(patientTestOne);
 		listPatientsTest.add(patientTestTwo);
 		listPatientsTest.add(patientTestThree);

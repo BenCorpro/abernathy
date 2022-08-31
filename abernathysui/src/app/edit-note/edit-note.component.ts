@@ -15,7 +15,6 @@ export class EditNoteComponent implements OnInit {
   noteId!: string;
   note!: Note;
   noteForm!: FormGroup;
-  notePreview$!: Observable<Note>;
   errorMessage!: string;
 
   constructor(private route: ActivatedRoute,

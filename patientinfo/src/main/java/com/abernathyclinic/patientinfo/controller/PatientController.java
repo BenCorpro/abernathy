@@ -43,7 +43,7 @@ public class PatientController {
 	
 	@GetMapping("/patient")
 	public List<PatientDTO> getPatientByNames(@RequestParam(name="given", defaultValue="") String firstname, @RequestParam(name="family", defaultValue="") String lastname) throws PatientNotFoundException {
-		return patientService.getPatientByNames(lastname, firstname);
+		return patientService.getPatientByNames(firstname, lastname);
 	}
 	
 	@PostMapping("/patient/add")

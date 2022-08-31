@@ -1,11 +1,4 @@
 <div class="container">
-<mat-card *ngIf="errorMessage">
-    <mat-card-title-group>
-        <mat-card-title>Erreur</mat-card-title>
-        <mat-card-subtitle><mat-icon fontIcon="warning"></mat-icon></mat-card-subtitle>
-    </mat-card-title-group>  
-    <mat-card-content>{{errorMessage}}</mat-card-content>
-</mat-card>
 <mat-card>
         <mat-card-title>
             <h2>MODIFIER PATIENT</h2>
@@ -46,7 +39,7 @@
             <mat-label>Date de naissance</mat-label>
             <input matInput [matDatepicker]="picker" formControlName="birthdate" [readonly]="true">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
+            <mat-datepicker #picker [disabled]="true"></mat-datepicker>
             <mat-error *ngIf=" patientForm.controls['birthdate'].touched
             && patientForm.controls['birthdate'].errors 
             && patientForm.controls['birthdate'].errors!['required']">
@@ -89,17 +82,12 @@
     </form>
     </mat-card-content>
 </mat-card>
-</div>
-
-<mat-card *ngIf="patientPreview$ | async as patient">
+<mat-card *ngIf="errorMessage">
     <mat-card-title>
-        <h3>Nom: {{patient.lastname | uppercase}} Prénom: {{patient.firstname}}</h3>
+        <h2>Erreur</h2>
+        <mat-icon fontIcon="warning"></mat-icon>
     </mat-card-title>
-    <mat-card-content>
-        <p>Date de naissance: {{patient.birthdate | date: 'dd/MM/yyyy'}}</p>
-        <p>Genre: {{patient.gender}}</p>
-        <p>Addresse: {{patient.address}}</p>
-        <p>Téléphone: {{patient.phone}}</p>
-    </mat-card-content>
+    <mat-card-content id="errcontent"><p>{{errorMessage}}</p></mat-card-content>
 </mat-card>
+</div>
 

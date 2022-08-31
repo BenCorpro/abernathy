@@ -15,7 +15,6 @@ export class EditPatientComponent implements OnInit {
   patientId!: number;
   patient!: Patient;
   patientForm!: FormGroup;
-  patientPreview$!: Observable<Patient>;
   errorMessage!: string;
   dateRegex!: RegExp;
   phoneRegex!: RegExp;

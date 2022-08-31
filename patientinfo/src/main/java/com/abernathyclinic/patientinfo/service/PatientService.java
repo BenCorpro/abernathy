@@ -11,7 +11,7 @@ public interface PatientService {
 
 	PatientDTO getPatientById(Long id) throws PatientNotFoundException;
 
-	List<PatientDTO> getPatientByNames(String lastname, String firstname) throws PatientNotFoundException;
+	List<PatientDTO> getPatientByNames(String firstname, String lastname) throws PatientNotFoundException;
 
 	PatientDTO savePatient(PatientDTO newPatient);
 

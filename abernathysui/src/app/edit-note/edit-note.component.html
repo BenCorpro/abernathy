@@ -1,18 +1,11 @@
 <div class="container">
-<mat-card *ngIf="errorMessage">
-    <mat-card-title>Erreur</mat-card-title>
-    <mat-card-content>{{errorMessage}}</mat-card-content>
-</mat-card>
-
 <mat-card>
-    <mat-card-title-group>
         <mat-card-title>
             <h2>MODIFIER NOTE</h2>
         </mat-card-title>
         <mat-card-subtitle>
             <button mat-button color="primary" routerLink="/listnotes/{{note.patientId}}">Retour</button>
         </mat-card-subtitle>
-    </mat-card-title-group>
     <mat-card-content>
         <form [formGroup]="noteForm">
             <mat-form-field>
@@ -48,11 +41,12 @@
             </mat-card-actions>
         </form>
     </mat-card-content>
-</mat-card>  
-</div>
-
-<div class="note-card" *ngIf="notePreview$ | async as note">
-    <h3>Nom du patient: {{note.patientName | uppercase}}</h3>
-    <p>Id du patient: {{note.patientId}}</p>
-    <p>Recommendations: {{note.recommendation}}</p>
+</mat-card>
+<mat-card *ngIf="errorMessage">
+    <mat-card-title>
+        <h2>Erreur</h2>
+        <mat-icon fontIcon="warning"></mat-icon>
+    </mat-card-title>
+    <mat-card-content id="errcontent"><p>{{errorMessage}}</p></mat-card-content>
+</mat-card>
 </div>

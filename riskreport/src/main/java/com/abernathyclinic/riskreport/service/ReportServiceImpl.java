@@ -2,6 +2,8 @@ package com.abernathyclinic.riskreport.service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.abernathyclinic.riskreport.dto.AssessmentDTO;
@@ -16,6 +18,8 @@ import com.abernathyclinic.riskreport.util.Trigger;
 
 @Service
 public class ReportServiceImpl implements ReportService {
+	
+	private static Logger logger = LoggerFactory.getLogger(ReportServiceImpl.class);
 
 	private PatientRestClient patientRestClient;
 	private NoteRestClient noteRestClient;
@@ -44,10 +48,11 @@ public class ReportServiceImpl implements ReportService {
 		int patientAge = AgeCalculator.ageCalculator(patient.getBirthdate()).getYears();
 		boolean underThirty = AgeCalculator.isUnderThirtyFunction(patient.getBirthdate());
 		int riskOccurences = 0;
+		boolean found;
 		for(Trigger trigger: Trigger.values()) {
-			riskOccurences += patientNotes.stream().filter(note -> note.getRecommendation().contains(trigger.englishTerm) || 
-																	note.getRecommendation().contains(trigger.frenchTerm))
-													.count();
+			found = patientNotes.stream().anyMatch(note -> note.getRecommendation().toLowerCase().contains(trigger.englishTerm) || 
+																	note.getRecommendation().toLowerCase().contains(trigger.frenchTerm));
+			if(found) riskOccurences++;
 		}
 		switch(riskOccurences) {
 			case 0:
@@ -91,7 +96,8 @@ public class ReportServiceImpl implements ReportService {
 			default: riskAssess = Risk.EarlyOnset;
 		}
 		StringBuilder strName = new StringBuilder();
-		String patientName = strName.append(patient.getLastname()).append(" ").append(patient.getFirstname()).toString();
+		String patientName = strName.append(patient.getFirstname()).append(" ").append(patient.getLastname()).toString();
+		logger.info("Patient " + patientName + " has " + riskOccurences + "risk occurences");
 		return new AssessmentDTO(patient.getId(), patientName, patientAge, riskAssess);
 	}
 }

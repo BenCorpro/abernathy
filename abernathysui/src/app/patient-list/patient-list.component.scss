@@ -25,8 +25,8 @@
   font-size: large;
 }
 
-.mat-toolbar{
-  background-color: whitesmoke;
+.mat-divider{
+  margin: 10px 0px 10px 0px;
 }
 
 .mat-toolbar-row{
@@ -75,12 +75,23 @@
   justify-content: space-around;
 }
 
+.mat-toolbar-row > button {
+  margin: 20px auto 10px auto;
+}
+
 .mat-card-actions > button {
   width: 50%;
 }
 
 .mat-card-actions{
   margin: auto;
+}
+
+input{
+  border-bottom-style: solid;
+  border-color: blue;
+  border-width: 1px;
+  border-radius: 5px;
 }
 
 .mat-card-title{
