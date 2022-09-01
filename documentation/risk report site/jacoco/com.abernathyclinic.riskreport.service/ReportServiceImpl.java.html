@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ReportServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">riskreport</a> &gt; <a href="index.source.html" class="el_package">com.abernathyclinic.riskreport.service</a> &gt; <span class="el_source">ReportServiceImpl.java</span></div><h1>ReportServiceImpl.java</h1><pre class="source lang-java linenums">package com.abernathyclinic.riskreport.service;
+
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import com.abernathyclinic.riskreport.dto.AssessmentDTO;
+import com.abernathyclinic.riskreport.model.Note;
+import com.abernathyclinic.riskreport.model.Patient;
+import com.abernathyclinic.riskreport.restclient.NoteRestClient;
+import com.abernathyclinic.riskreport.restclient.PatientRestClient;
+import com.abernathyclinic.riskreport.util.AgeCalculator;
+import com.abernathyclinic.riskreport.util.Gender;
+import com.abernathyclinic.riskreport.util.Risk;
+import com.abernathyclinic.riskreport.util.Trigger;
+
+@Service
+public class ReportServiceImpl implements ReportService {
+	
+<span class="fc" id="L22">	private static Logger logger = LoggerFactory.getLogger(ReportServiceImpl.class);</span>
+
+	private PatientRestClient patientRestClient;
+	private NoteRestClient noteRestClient;
+	
+	
+<span class="fc" id="L28">	public ReportServiceImpl(PatientRestClient patientRestClient, NoteRestClient noteRestClient) {</span>
+<span class="fc" id="L29">		this.patientRestClient = patientRestClient;</span>
+<span class="fc" id="L30">		this.noteRestClient = noteRestClient;</span>
+<span class="fc" id="L31">	}</span>
+	
+
+	@Override
+	public AssessmentDTO riskAssessment(long patientId) {
+<span class="fc" id="L36">		return riskAssessment(patientRestClient.getPatientById(patientId));</span>
+	}
+	
+	@Override
+	public AssessmentDTO riskAssessment(String patientName) {
+<span class="fc" id="L41">		return riskAssessment(patientRestClient.getPatientByNames(patientName, &quot;&quot;).get(0));</span>
+	}
+	
+	@Override
+	public AssessmentDTO riskAssessment(Patient patient) {
+<span class="fc" id="L46">		Risk riskAssess = null;</span>
+<span class="fc" id="L47">		List&lt;Note&gt; patientNotes = noteRestClient.getNoteByPatientId(patient.getId());</span>
+<span class="fc" id="L48">		int patientAge = AgeCalculator.ageCalculator(patient.getBirthdate()).getYears();</span>
+<span class="fc" id="L49">		boolean underThirty = AgeCalculator.isUnderThirtyFunction(patient.getBirthdate());</span>
+<span class="fc" id="L50">		int riskOccurences = 0;</span>
+		boolean found;
+<span class="fc bfc" id="L52" title="All 2 branches covered.">		for(Trigger trigger: Trigger.values()) {</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">			found = patientNotes.stream().anyMatch(note -&gt; note.getRecommendation().toLowerCase().contains(trigger.englishTerm) || </span>
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">																	note.getRecommendation().toLowerCase().contains(trigger.frenchTerm));</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">			if(found) riskOccurences++;</span>
+		}
+<span class="pc bpc" id="L57" title="1 of 8 branches missed.">		switch(riskOccurences) {</span>
+			case 0:
+<span class="fc" id="L59">			case 1: riskAssess = Risk.None;</span>
+<span class="fc" id="L60">					break;</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">			case 2: if (!underThirty) { riskAssess = Risk.BorderLine;</span>
+<span class="fc" id="L62">					} else {</span>
+<span class="fc" id="L63">						riskAssess = Risk.None;	</span>
+					}
+<span class="fc" id="L65">					break;</span>
+<span class="fc bfc" id="L66" title="All 4 branches covered.">			case 3: if(underThirty &amp;&amp; patient.getGender() == Gender.MALE) { riskAssess = Risk.InDanger;</span>
+<span class="pc bpc" id="L67" title="1 of 4 branches missed.">					} else if (underThirty &amp;&amp; patient.getGender() == Gender.FEMALE) {</span>
+<span class="fc" id="L68">						riskAssess = Risk.None;</span>
+<span class="fc" id="L69">					} else {</span>
+<span class="fc" id="L70">						riskAssess = Risk.BorderLine;</span>
+					}
+<span class="fc" id="L72">					break;</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">			case 4: if(underThirty) {riskAssess = Risk.InDanger;</span>
+<span class="fc" id="L74">					} else {</span>
+<span class="fc" id="L75">						riskAssess = Risk.BorderLine;</span>
+					}
+<span class="fc" id="L77">					break;</span>
+<span class="fc bfc" id="L78" title="All 4 branches covered.">			case 5: if(underThirty &amp;&amp; patient.getGender() == Gender.MALE) { riskAssess = Risk.EarlyOnset;</span>
+<span class="pc bpc" id="L79" title="1 of 4 branches missed.">					} else if (underThirty &amp;&amp; patient.getGender() == Gender.FEMALE) {</span>
+<span class="fc" id="L80">						riskAssess = Risk.InDanger;</span>
+<span class="fc" id="L81">					} else {</span>
+<span class="fc" id="L82">						riskAssess = Risk.BorderLine;</span>
+					}
+<span class="fc" id="L84">					break;</span>
+<span class="pc bpc" id="L85" title="1 of 4 branches missed.">			case 6: if(underThirty &amp;&amp; patient.getGender() == Gender.MALE) { riskAssess = Risk.EarlyOnset;</span>
+<span class="fc" id="L86">					} else {</span>
+<span class="fc" id="L87">						riskAssess = Risk.InDanger;</span>
+					}
+<span class="fc" id="L89">					break;</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">			case 7: if(underThirty) { riskAssess = Risk.EarlyOnset;</span>
+<span class="nc" id="L91">					} else {</span>
+<span class="nc" id="L92">						riskAssess = Risk.InDanger;</span>
+					}
+<span class="nc" id="L94">					break;</span>
+			case 8:
+<span class="fc" id="L96">			default: riskAssess = Risk.EarlyOnset;</span>
+		}
+<span class="fc" id="L98">		StringBuilder strName = new StringBuilder();</span>
+<span class="fc" id="L99">		String patientName = strName.append(patient.getFirstname()).append(&quot; &quot;).append(patient.getLastname()).toString();</span>
+<span class="fc" id="L100">		logger.info(&quot;Patient &quot; + patientName + &quot; has &quot; + riskOccurences + &quot;risk occurences&quot;);</span>
+<span class="fc" id="L101">		return new AssessmentDTO(patient.getId(), patientName, patientAge, riskAssess);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

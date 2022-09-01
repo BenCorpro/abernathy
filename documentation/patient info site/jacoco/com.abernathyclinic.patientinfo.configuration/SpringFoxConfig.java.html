@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SpringFoxConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">patientinfo</a> &gt; <a href="index.source.html" class="el_package">com.abernathyclinic.patientinfo.configuration</a> &gt; <span class="el_source">SpringFoxConfig.java</span></div><h1>SpringFoxConfig.java</h1><pre class="source lang-java linenums">package com.abernathyclinic.patientinfo.configuration;
+
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.util.ReflectionUtils;
+import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
+
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.spring.web.plugins.WebFluxRequestHandlerProvider;
+import springfox.documentation.spring.web.plugins.WebMvcRequestHandlerProvider;
+
+@Configuration
+<span class="fc" id="L22">public class SpringFoxConfig {</span>
+
+    @Bean
+    public Docket api() { 
+<span class="fc" id="L26">        return new Docket(DocumentationType.SWAGGER_2)  </span>
+<span class="fc" id="L27">          .select()                                  </span>
+<span class="fc" id="L28">          .apis(RequestHandlerSelectors.any())              </span>
+<span class="fc" id="L29">          .paths(PathSelectors.any())                          </span>
+<span class="fc" id="L30">          .build();                                           </span>
+    }
+
+    @Bean
+    public static BeanPostProcessor springfoxHandlerProviderBeanPostProcessor() {
+<span class="fc" id="L35">        return new BeanPostProcessor() {</span>
+
+            @Override
+            public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+<span class="pc bpc" id="L39" title="1 of 4 branches missed.">                if (bean instanceof WebMvcRequestHandlerProvider || bean instanceof WebFluxRequestHandlerProvider) {</span>
+<span class="fc" id="L40">                    customizeSpringfoxHandlerMappings(getHandlerMappings(bean));</span>
+                }
+<span class="fc" id="L42">                return bean;</span>
+            }
+
+            private &lt;T extends RequestMappingInfoHandlerMapping&gt; void customizeSpringfoxHandlerMappings(List&lt;T&gt; mappings) {
+<span class="fc" id="L46">                List&lt;T&gt; copy = mappings.stream()</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">                    .filter(mapping -&gt; mapping.getPatternParser() == null)</span>
+<span class="fc" id="L48">                    .collect(Collectors.toList());</span>
+<span class="fc" id="L49">                mappings.clear();</span>
+<span class="fc" id="L50">                mappings.addAll(copy);</span>
+<span class="fc" id="L51">            }</span>
+
+            @SuppressWarnings(&quot;unchecked&quot;)
+            private List&lt;RequestMappingInfoHandlerMapping&gt; getHandlerMappings(Object bean) {
+                try {
+<span class="fc" id="L56">                    Field field = ReflectionUtils.findField(bean.getClass(), &quot;handlerMappings&quot;);</span>
+<span class="fc" id="L57">                    field.setAccessible(true);</span>
+<span class="fc" id="L58">                    return (List&lt;RequestMappingInfoHandlerMapping&gt;) field.get(bean);</span>
+<span class="nc" id="L59">                } catch (IllegalArgumentException | IllegalAccessException e) {</span>
+<span class="nc" id="L60">                    throw new IllegalStateException(e);</span>
+                }
+            }
+        };
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

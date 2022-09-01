@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NoteController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">patienthistory</a> &gt; <a href="index.source.html" class="el_package">com.abernathyclinic.patienthistory.controller</a> &gt; <span class="el_source">NoteController.java</span></div><h1>NoteController.java</h1><pre class="source lang-java linenums">package com.abernathyclinic.patienthistory.controller;
+
+import java.util.List;
+
+import javax.validation.Valid;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.abernathyclinic.patienthistory.dto.NoteDTO;
+import com.abernathyclinic.patienthistory.exception.NoteNotFoundException;
+import com.abernathyclinic.patienthistory.service.NoteService;
+
+@CrossOrigin(origins = &quot;*&quot;, allowedHeaders = &quot;*&quot;)
+@RestController
+public class NoteController {
+
+	private NoteService noteService;
+
+<span class="fc" id="L28">	public NoteController(NoteService noteService) {</span>
+<span class="fc" id="L29">		this.noteService = noteService;</span>
+<span class="fc" id="L30">	}</span>
+
+	
+	@GetMapping(&quot;/notes&quot;)
+	public List&lt;NoteDTO&gt; getAllNotes(){
+<span class="fc" id="L35">		return noteService.getAllNotes();</span>
+	}
+	
+	@GetMapping(&quot;/note/{id}&quot;)
+	public NoteDTO getNoteById(@PathVariable(&quot;id&quot;) String id) throws NoteNotFoundException{
+<span class="fc" id="L40">		return noteService.getNoteById(id);</span>
+	}
+	
+	@GetMapping(&quot;/notes/{patientId}&quot;)
+	public List&lt;NoteDTO&gt; getNoteByPatientId(@PathVariable(&quot;patientId&quot;) Long patientId) throws NoteNotFoundException{
+<span class="fc" id="L45">		return noteService.getNoteByPatientId(patientId);</span>
+	}
+	
+	@PostMapping(&quot;/note/add&quot;)
+	@ResponseStatus(HttpStatus.CREATED)
+	public NoteDTO saveNote(@Valid @RequestBody NoteDTO newNote) {
+<span class="fc" id="L51">		return noteService.saveNote(newNote);</span>
+	}
+	
+	@PutMapping(&quot;/note/update/{id}&quot;)
+	@ResponseStatus(HttpStatus.OK)
+	public NoteDTO updateNote(@PathVariable(&quot;id&quot;) String id, @Valid @RequestBody NoteDTO modNote) throws NoteNotFoundException {
+<span class="fc" id="L57">		return noteService.updateNote(id, modNote);</span>
+	}
+	
+	@DeleteMapping(&quot;/note/delete/{id}&quot;)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void deleteNote(@PathVariable(&quot;id&quot;) String id) throws NoteNotFoundException {
+<span class="fc" id="L63">		noteService.deleteNote(id);</span>
+<span class="fc" id="L64">	}</span>
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

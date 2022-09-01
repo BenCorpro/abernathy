@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FeignExceptionHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">riskreport</a> &gt; <a href="index.source.html" class="el_package">com.abernathyclinic.riskreport.controller</a> &gt; <span class="el_source">FeignExceptionHandler.java</span></div><h1>FeignExceptionHandler.java</h1><pre class="source lang-java linenums">package com.abernathyclinic.riskreport.controller;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.MapLikeType;
+
+import feign.FeignException;
+
+@RestControllerAdvice
+<span class="fc" id="L20">public class FeignExceptionHandler {</span>
+	
+	@Autowired
+	private ObjectMapper objectMapper;
+	
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	@ExceptionHandler(FeignException.NotFound.class)
+	public Map&lt;String, String&gt; handleFeignNotFoundException(FeignException fEx){
+<span class="fc" id="L28">		Map&lt;String, String&gt; error = new HashMap&lt;&gt;();</span>
+		//error.put(&quot;Error&quot;, fEx.contentUTF8());
+<span class="fc" id="L30">		MapLikeType mapLikeType = objectMapper.getTypeFactory().constructMapLikeType(Map.class, String.class, String.class);</span>
+		try {
+<span class="nc" id="L32">			error = objectMapper.readValue(fEx.contentUTF8(), mapLikeType);</span>
+<span class="pc" id="L33">		} catch (JsonMappingException e) {</span>
+<span class="fc" id="L34">			e.printStackTrace();</span>
+<span class="nc" id="L35">		} catch (JsonProcessingException e) {</span>
+<span class="nc" id="L36">			e.printStackTrace();</span>
+		}
+<span class="fc" id="L38">		return error;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

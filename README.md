@@ -47,7 +47,7 @@
 
 <div align="center">
 <br />
-    <img src="images/screenshot.png" alt="screenshot" width="700" height="500">
+    <img src="images/screenshot.png" alt="screenshot" width="800" height="300">
 <br />
 </div>
 
@@ -111,7 +111,7 @@ Running it on Docker is the easiest way considering the number of dependencies n
 
 The application can be used as a whole with the user interface at <a href="http://localhost:80/">localhost:80</a> or as 3 separated APIs.
 
-_For this last usage, please refer to the [API Documentation](https://github.com/BenCorpro/abernathy/documentation/APIsDocs.pdf)_
+_For this last usage, please refer to the API Documentation in documentation directory_
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -120,9 +120,6 @@ _For this last usage, please refer to the [API Documentation](https://github.com
 <!-- TEST REPORTS -->
 ## Test Reports
 
-_Test and code coverage reports are available for all 3 services as a site in each respective directory:_
-* [PatientInfo reports](https://github.com/BenCorpro/abernathy/patientinfo/target/site/index.html)
-* [PatientInfo reports](https://github.com/BenCorpro/abernathy/patienthistory/target/site/index.html)
-* [PatientInfo reports](https://github.com/BenCorpro/abernathy/riskreport/target/site/index.html)
+_Test and code coverage reports are available for all 3 services as a site in documentation directory_
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
