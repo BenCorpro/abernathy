@@ -11,16 +11,16 @@ public class PatientDTO {
 
 	private long id;
 	@NotNull(message = "Le prénom doit être renseigné")
-	@Pattern(regexp = "[a-zA-Z-\\s]{3,15}", message = "Le prénom doit être valide et comporter 3 caractères minimum")
+	@Pattern(regexp = "[-'a-zA-ZÀ-ÖØ-öø-ÿ\\s]{3,15}", message = "Le prénom doit être valide et comporter 3 caractères minimum")
 	private String firstname;
 	@NotNull(message = "Le nom doit être renseigné")
-	@Pattern(regexp = "[a-zA-Z-\\s]{3,15}", message = "Le nom doit être valide et comporter 3 caractères minimum")
+	@Pattern(regexp = "[-'a-zA-ZÀ-ÖØ-öø-ÿ\\\\s]{3,15}", message = "Le nom doit être valide et comporter 3 caractères minimum")
 	private String lastname;
 	@NotNull
 	private Date birthdate;
 	@NotNull
 	private Gender gender;
-	@Pattern(regexp = "[a-zA-Z0-9-\\s]{3,50}", message = "L'adresse ne doit contenir que lettres et chiffres")
+	@Pattern(regexp = "[-'a-zA-ZÀ-ÖØ-öø-ÿ0-9\\s]{3,50}", message = "L'adresse ne doit contenir que lettres et chiffres")
 	private String address;
 	@Pattern(regexp = "[0-9-\\s]{3,12}", message = "Le numéro de téléphone ne doit contenir que des chiffres")
 	private String phone;

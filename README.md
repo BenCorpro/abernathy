@@ -36,6 +36,7 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
+    <li><a href="#test-reports">Test Reports</a></li>
   </ol>
 </details>
 
@@ -46,7 +47,7 @@
 
 <div align="center">
 <br />
-    <img src="images/screenshot.png" alt="screenshot" width="300" height="200">
+    <img src="images/screenshot.png" alt="screenshot" width="700" height="500">
 <br />
 </div>
 
@@ -95,7 +96,7 @@ Running it on Docker is the easiest way considering the number of dependencies n
    ```
 3. Execute the docker-compose.yml at project root
    ```sh
-   docker-compose up
+   docker-compose -d up
    ```
 4. Go to home page
    ```js
@@ -110,6 +111,18 @@ Running it on Docker is the easiest way considering the number of dependencies n
 
 The application can be used as a whole with the user interface at <a href="http://localhost:80/">localhost:80</a> or as 3 separated APIs.
 
-_For this last usage, please refer to the [API Documentation](https://github.com/BenCorpro/abernathy/documentation/)_
+_For this last usage, please refer to the [API Documentation](https://github.com/BenCorpro/abernathy/documentation/APIsDocs.pdf)_
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- TEST REPORTS -->
+## Test Reports
+
+_Test and code coverage reports are available for all 3 services as a site in each respective directory:_
+* [PatientInfo reports](https://github.com/BenCorpro/abernathy/patientinfo/target/site/index.html)
+* [PatientInfo reports](https://github.com/BenCorpro/abernathy/patienthistory/target/site/index.html)
+* [PatientInfo reports](https://github.com/BenCorpro/abernathy/riskreport/target/site/index.html)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

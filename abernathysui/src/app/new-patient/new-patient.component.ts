@@ -14,20 +14,24 @@ export class NewPatientComponent implements OnInit {
 
   patientForm!: FormGroup;
   errorMessage!: string;
-  dateRegex!: RegExp;
   phoneRegex!: RegExp;
   nameRegex!: RegExp;
   addressRegex!: RegExp;
+  minDate!: Date;
+  maxDate!: Date;
 
   constructor(private formBuilder: FormBuilder,
               private patientService: PatientService,
-              private router: Router) { }
+              private router: Router) {
+                const currentYear = new Date().getFullYear(); 
+                this.maxDate = new Date();
+                this.minDate = new Date(currentYear - 120, 0, 1);
+              }
 
   ngOnInit(): void {
-    this.dateRegex = /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/;
     this.phoneRegex= /^[0-9-\\s]{3,12}$/;
-    this.nameRegex= /^[a-zA-Z-\s]{3,15}$/;
-    this.addressRegex= /^[a-zA-Z0-9-\s]{3,50}$/;
+    this.nameRegex= /^[-'a-zA-ZÀ-ÖØ-öø-ÿ\s]{3,15}$/;
+    this.addressRegex= /^[-'a-zA-ZÀ-ÖØ-öø-ÿ0-9\s]{3,50}$/;
     this.patientForm = this.formBuilder.group({
       firstname: [null, [Validators.required, Validators.pattern(this.nameRegex)]],
       lastname: [null, [Validators.required, Validators.pattern(this.nameRegex)]],

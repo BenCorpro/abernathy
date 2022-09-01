@@ -23,10 +23,13 @@ export class NoteComponent implements OnInit {
   }
 
   onNoteDelete(noteId: string | null){
+    let currentUrl = this.router.url;
     let confirmation = confirm("Êtes vous sûr de vouloir supprimer la note?");
     if(!confirmation) return;
     this.noteService.deleteNote(noteId).pipe(
-      tap(() => this.router.navigateByUrl(`patient/${this.note.patientId}`)) 
+      tap(() => this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+        this.router.navigate([currentUrl]);
+    })) 
     ).subscribe();
   }
 

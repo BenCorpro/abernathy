@@ -16,7 +16,7 @@ public class NoteDTO {
 	@Positive(message= "L'identifiant du patient doit être valide")
 	private long patientId;
 	@NotNull(message = "Le nom du patient doit être renseigné")
-	@Pattern(regexp = "[a-zA-Z-\\s]{3,15}", message = "Le nom doit être valide et comporter 3 caractères minimum")
+	@Pattern(regexp = "[-'a-zA-ZÀ-ÖØ-öø-ÿ\\s]{3,15}", message = "Le nom doit être valide et comporter 3 caractères minimum")
 	private String patientName;
 	@NotBlank(message ="La note ne doit pas être vide")
 	private String recommendation;

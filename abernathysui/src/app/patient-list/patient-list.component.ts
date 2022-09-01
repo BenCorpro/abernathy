@@ -58,6 +58,9 @@ export class PatientListComponent implements OnInit {
   }
 
   reloadPage(){
-    location.replace('patients');
+    let currentUrl = this.router.url;
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+        this.router.navigate([currentUrl]);
+    });
   }
 }
