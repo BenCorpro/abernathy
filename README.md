@@ -51,8 +51,10 @@
 <br />
 </div>
 
+<p>
 This is the 9th and final project for the Openclassrooms Java developper's course<br />
 The application must be build with a microservices architecture, runnable in Docker containers, with both MySQL and MongoDB as databases
+</p>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

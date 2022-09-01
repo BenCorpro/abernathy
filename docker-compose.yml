@@ -32,6 +32,7 @@ services:
    SPRING_DATASOURCE_URL: jdbc:mysql://patinfodb:3306/patientinfosdb?serverTimezone=UTC
    SPRING_DATASOURCE_USERNAME: aberuser
    SPRING_DATASOURCE_PASSWORD: aberpwd
+  restart: on-failure
  pathisto:
   container_name: pathisto
   build: ./patienthistory
@@ -43,6 +44,7 @@ services:
    - pathistodb
   environment:
    SPRING_DATA_MONGODB_HOST: pathistodb
+  restart: on-failure
  riskreport:
   container_name: riskreport
   build: ./riskreport
@@ -56,6 +58,7 @@ services:
    - pathisto
   environment:
    SPRING_PROFILES_ACTIVE: prod
+  restart: on-failure
  abernathysui:
   container_name: abernathysui
   build: ./abernathysui
